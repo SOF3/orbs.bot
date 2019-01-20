@@ -36,30 +36,32 @@ export const GamesCommand: Command = {
 
 		lock[msg.guild.id] = msg.channel.id
 
-		const reply = await msg.reply(getLines(), {
-			embed: {
-				title: "Note",
-				description: `I have only been alive for ${Math.round((Date.now() - alive) / 60000)} minute(s). ` +
-					`Some games might be older than me!`,
-				timestamp: new Date(Date.now() + LIVE_TIME),
-			},
-		})
-		if(reply instanceof Message){
-			let remaining = LIVE_TIME
-			while(true){
-				remaining -= LIVE_STEP
-				if(remaining < 0){
-					break
+		try{
+			const reply = await msg.reply(getLines(), {
+				embed: {
+					title: "Note",
+					description: `I have only been alive for ${Math.round((Date.now() - alive) / 60000)} minute(s). ` +
+						`Some games might be older than me!`,
+					timestamp: new Date(Date.now() + LIVE_TIME),
+				},
+			})
+			if(reply instanceof Message){
+				let remaining = LIVE_TIME
+				while(true){
+					remaining -= LIVE_STEP
+					if(remaining < 0){
+						break
+					}
+					await Promise.all([
+						reply.edit(getLines() + (remaining === 0 ? "" :
+							`\n\n(The message will be live for ${Math.round(remaining / 600) / 100} more minutes)`)),
+						delay(LIVE_STEP),
+					])
 				}
-				await Promise.all([
-					reply.edit(getLines() + (remaining === 0 ? "" :
-						`\n\n(The message will be live for ${Math.round(remaining / 600) / 100} more minutes)`)),
-					delay(LIVE_STEP),
-				])
 			}
+		}finally{
+			delete lock[msg.guild.id]
 		}
-
-		delete lock[msg.guild.id]
 	},
 }
 
