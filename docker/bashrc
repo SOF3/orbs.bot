@@ -1,0 +1,2 @@
+NPM_PACKAGES=/home/node/.npm-packages
+PATh="${NPM_PACKAGES}/bin:$PATH"

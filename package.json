@@ -1,0 +1,20 @@
+{
+	"name": "orbs.bot",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"start": "node ./bin/app.js"
+	},
+	"dependencies": {
+		"discord.js": "^11.4.2",
+		"request": "^2.88.0",
+		"websocket": "^1.0.28",
+		"svg2png": "latest"
+	},
+	"devDependencies": {
+		"@types/node": "^10.12.12",
+		"@types/svg2png": "^4.1.0",
+		"@types/websocket": "^0.0.40",
+		"typescript": "^3.2.2"
+	}
+}

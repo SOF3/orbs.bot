@@ -1,0 +1,6 @@
+.idea
+bin
+node_modules
+orbs.log
+output.log
+secrets

@@ -1,0 +1,20 @@
+---
+version: "2"
+services:
+  node:
+    build: ./docker
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./secrets:/home/node/app/secrets
+      - ./app.ts:/home/node/app/app.ts
+      - ./src:/home/node/app/src
+      - ./package.json:/home/node/app/package.json
+      - ./package-lock.json:/home/node/app/package-lock.json
+      - ./tsconfig.json:/home/node/app/tsconfig.json
+      - ./output.log:/home/node/app/output.log
+      - ./orbs.log:/home/node/app/orbs.log
+    command: "./start.sh"
+...
