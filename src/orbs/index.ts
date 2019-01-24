@@ -33,6 +33,12 @@ export function sendRequest(action: number, extraParams: string = ""): Promise<s
 	})
 }
 
+export async function getWeekEnd(){
+	const [, , time] = await sendRequest(ACTION_WEEKLY_RANKINGS)
+	const remaining = 60 * 60 * 24 * 7 - parseInt(time)
+	return remaining
+}
+
 export const ACTION_WEEKLY_RANKINGS = 18
 
 export const ACTION_LIST_SERVERS = 37

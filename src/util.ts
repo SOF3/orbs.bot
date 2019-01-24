@@ -13,6 +13,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+export const WEEKLY_FEED_CHANNEL_ID = "507933736612921347"
+
 export function delay(ms){
 	return new Promise(resolve => setTimeout(resolve, ms))
 }

@@ -13,19 +13,94 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {Client} from "discord.js"
-import * as process from "process"
+import {Client, TextChannel} from "discord.js"
 import {secrets} from "./secrets"
 import {commands} from "./src/commands"
-import {initPool} from "./src/orbs/pool"
-import {logConsole} from "./src/util"
 import {Friendly} from "./src/commands/Friendly"
+import {ACTION_WEEKLY_RANKINGS, getWeekEnd, sendRequest} from "./src/orbs"
+import {initPool} from "./src/orbs/pool"
+import {logConsole, WEEKLY_FEED_CHANNEL_ID} from "./src/util"
 
 export const bot = new Client()
 bot.login(secrets.token).catch(err => logConsole(`Login error: ${err}`))
 
-bot.on("ready", () => {
+async function onBotReady(){
 	logConsole(`Bot started. Invite link: https://discordapp.com/oauth2/authorize?scope=bot&client_id=${secrets.clientId}`)
+
+	const weekEnd = await getWeekEnd()
+
+	const moments = {
+		1: "Last hour before the weekly competition ends. Will there be sudden plot twists?",
+		12: "12 hours before the weekly competition ends. Work hard and make it to the top!",
+		24: "24 hours before the weekly competition ends.",
+		84: "Half of the week has passed!",
+	}
+
+	for(const hours in moments){
+		const millis = parseInt(hours) * 3600 * 1000
+		if(millis < weekEnd){
+			setTimeout(() => {
+				const channel = bot.channels.get(WEEKLY_FEED_CHANNEL_ID)
+				if(channel instanceof TextChannel){
+					channel.send(moments[hours]).catch(err => console.error(err))
+				}
+			}, millis)
+		}
+	}
+
+	setTimeout(() => {
+		const channel = bot.channels.get(WEEKLY_FEED_CHANNEL_ID) as TextChannel
+
+		function send(content: string){
+			channel.send(content).catch(err => console.error(err))
+		}
+
+		sendRequest(ACTION_WEEKLY_RANKINGS)
+			.then(data => {
+				const results = JSON.parse(data[1]).data as {
+					name: string
+					totGames: number
+					totShots: number
+					totHits: number
+					totPoints: number
+					numWins: number
+					numTop3: number
+				}[]
+
+				function formAccuracyMessage(hits: number, shots: number){
+					const accuracy = hits / shots
+					const accuracyText = Math.round(accuracy * 1000) / 10
+					const missText = Math.round((1 - accuracy) * 1000) / 10
+					if(accuracy > 0.9){
+						return `Admire the ${accuracyText}% accuracy they maintained among the ${shots} shots!`
+					}
+					if(accuracy < 0.3){
+						return `But only ${accuracyText}% accuracy? The ${shots - hits} missed shots must have been humiliating!`
+					}
+					if(accuracy < 0.5){
+						return `Better reduce the ${missText}% missed shots.`
+					}
+					return `Their ${accuracyText}% accuracy seems promising.`
+				}
+
+				send("The weekly competition has ended!")
+
+				let rank = 1
+				for(let i = 1; i <= 5; i++){
+					const lines = results.slice(10 * i - 9, 10 * i).map(result =>
+						`#${++rank}. **${result.name}** won ${result.numWins} in ${result.totGames} games`
+						+ (result.numTop3 > result.numWins ? `(top 3 in ${result.numTop3} other games)` : "")
+						+ " " + formAccuracyMessage(result.totHits, result.totShots))
+					send(lines.join("\n"))
+				}
+
+			})
+
+	}, weekEnd * 1000 - 60000) // let's make it one minute faster
+}
+
+bot.on("ready", () => {
+	onBotReady().catch(err => console.error(err))
 })
 
 bot.on("any", (event) => {
