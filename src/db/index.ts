@@ -38,7 +38,6 @@ type RRD = RRow<RCell>
 export function query<T extends RRD = RRD>(sql: string, args: any[], wantFields: true): Promise<{results: T[], fields: FieldInfo[]}>
 export function query<T extends RRD = RRD>(sql: string, args?: any[], wantFields?: false): Promise<T[]>
 export function query<T extends RRD = RRD>(sql: string, args: any[] = [], wantFields: boolean = false): Promise<{results: T[], fields: FieldInfo[]} | T[]>{
-	console.debug(`SQL: ${sql} -- ${JSON.stringify(args)}`)
 	return new Promise((resolve, reject) => {
 		db.query({
 			sql: sql,
