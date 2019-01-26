@@ -1,5 +1,5 @@
 meta <- read.csv("meta.csv", stringsAsFactors = FALSE)
 data <- read.csv("input.csv")
-png("output.png", 1000, 1000)
+png("output.png", 600, 600)
 plot(x = data$x, y = data$y, type = "l", main = meta$title, xlab = meta$xlab, ylab = meta$ylab, col = meta$col, xlim=c())
 dev.off()
