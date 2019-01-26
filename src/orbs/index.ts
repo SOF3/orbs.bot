@@ -38,5 +38,6 @@ export async function initOrbs(){
 		return client.prepare()
 	}))
 
+	console.log("Initializing weekly feed")
 	await scheduleWeeklyFeed()
 }
