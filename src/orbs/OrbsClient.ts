@@ -67,4 +67,8 @@ export abstract class OrbsClient{
 	}
 
 	protected abstract handleMessage(id: number, data: string[]): Promise<void>
+
+	getPort(){
+		return parseInt(this.address.split(":")[1])
+	}
 }

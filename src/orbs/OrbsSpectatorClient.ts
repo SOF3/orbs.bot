@@ -54,7 +54,7 @@ export class OrbsSpectatorClient extends OrbsClient{
 		this.sendMessage(OrbsSpectatorClient.JOIN_MATCH,
 			config.orbs.username, config.orbs.guid,
 			-999, -999,
-			this.gameId,
+			this.gameId >> 16,
 		)
 	}
 
