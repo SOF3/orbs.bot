@@ -41,7 +41,7 @@ export async function weeklyStats(){
 }
 
 export async function scheduleWeeklyFeed(){
-	const {remaining} = await weeklyStats()
+	const remaining = (await weeklyStats()).remaining * 1000
 
 	const moments = {
 		1: "Last hour before the weekly competition ends. Will there be sudden plot twists?",
@@ -58,6 +58,8 @@ export async function scheduleWeeklyFeed(){
 				channel.send(moments[hours]).catch(err => console.error(err))
 			}, remaining - millis)
 			console.log(`Scheduled to execute automated message ${hours} after ${remaining - millis} ms`)
+		}else{
+			console.log(`Not scheduling ${hours} as ${millis} >= ${remaining}`)
 		}
 	}
 
