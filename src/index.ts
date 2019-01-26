@@ -15,35 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import * as fs from "fs"
 import {initDiscord} from "./discord"
 import {initOrbs} from "./orbs"
-import {async} from "./util"
 import {initDb} from "./db"
-
-export let config: {
-	clientId: string
-	clientSecret: string
-	token: string
-
-	mysql: {
-		host: string
-		username: string
-		password: string
-		database: string
-	}
-
-	orbs: {
-		username: string
-		password: string
-		guid: number
-	}
-}
+import {loadConfig} from "./config"
 
 async function main(){
 	console.log("Loading config...")
-	config = JSON.parse(await async(cb =>
-		fs.readFile("/orbs/config/config.json", {encoding: "utf8"}, cb)))
+	await loadConfig()
 
 	console.log("Connecting to db")
 	await initDb()

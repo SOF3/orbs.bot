@@ -16,20 +16,20 @@
  */
 
 import {Command} from "./index"
-import {weeklyStats} from "../../orbs/weekly"
+import {weeklyStats, WeeklyStatsDatum} from "../../orbs/weekly"
 import {secondsToString} from "../../util"
 
 export const TopCommand: Command = {
 	name: "top",
 	description: "Show weekly rankings",
 	executor: async msg => {
-		await msg.reply(await makeTopText())
+		const {data, remaining} = await weeklyStats()
+		await msg.reply(`Weekly competition ends in ${secondsToString(remaining)}\n` + makeTopText(data))
 	},
 }
 
-export async function makeTopText(){
-	const {data, remaining} = await weeklyStats()
-	let output = [`Weekly competition ends in ${secondsToString(remaining)}`]
+export function makeTopText(data: WeeklyStatsDatum[]){
+	let output = [] as string[]
 	let rank = 1
 	for(const result of data){
 		const text = `#${rank++}. **${result.name}** won ${result.numWins} in ${result.totGames} games`

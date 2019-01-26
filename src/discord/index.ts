@@ -16,7 +16,7 @@
  */
 
 import {Client, Message, TextChannel} from "discord.js"
-import {config} from "../index"
+import {config} from "../config"
 import {Friendly} from "../util/Friendly"
 import {commands} from "./command"
 import {listMatchClients, UPDATE_RATE} from "../orbs"
@@ -26,7 +26,7 @@ export let client: Client
 export async function initDiscord(){
 	client = new Client()
 	console.log("Logging in")
-	await client.login(config.token)
+	await client.login(config.discord.token)
 	console.log("Waiting for ready")
 //	await new Promise((resolve, reject) => {
 //		client.on("ready", resolve)
@@ -34,7 +34,7 @@ export async function initDiscord(){
 //	})
 
 	console.info("Connected to Discord")
-	console.debug(`Invite link: https://discordapp.com/oauth2/authorize?scope=bot&client_id=${config.clientId}`)
+	console.debug(`Invite link: https://discordapp.com/oauth2/authorize?scope=bot&client_id=${config.discord.clientId}`)
 
 	await client.user.setActivity("bot startup", {type: "PLAYING"})
 

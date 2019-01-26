@@ -20,7 +20,7 @@ import {RestartCommand} from "./restart"
 import {GamesCommand} from "./games"
 import {TopCommand} from "./top"
 import {StatusCommand} from "./status"
-import {config} from "../../index"
+import {config} from "../../config"
 import {registerActivityCommands} from "./activity"
 
 export interface Command{
@@ -40,7 +40,7 @@ registerCommand({
 	description: "Shows this help page",
 	executor: async msg => {
 		const lines = [
-			`Invite link: https://discordapp.com/oauth2/authorize?scope=bot&client_id=${config.clientId}`,
+			`Invite link: https://discordapp.com/oauth2/authorize?scope=bot&client_id=${config.discord.clientId}`,
 			"**Available commands:**",
 		]
 		for(const name in commands){

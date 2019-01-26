@@ -16,7 +16,7 @@
  */
 
 import {OrbsClient} from "./OrbsClient"
-import {config} from "../index"
+import {config} from "../config"
 import {ListedOrb, ListedPlayer} from "./protocolTypes"
 import {EMOJI_LIST, EMOJI_QUESTION} from "./index"
 import {query, selectOne} from "../db"

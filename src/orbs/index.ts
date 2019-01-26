@@ -18,6 +18,7 @@
 import {listServers} from "./rest"
 import {OrbsListMatchClient} from "./OrbsListMatchClient"
 import {query} from "../db"
+import {scheduleWeeklyFeed} from "./weekly"
 
 export const EMOJI_LIST: string[] = ["🍎", "🍌", "🍇", "🥝", "🥔", "🍥", "🍡", "🥠"]
 export const EMOJI_QUESTION: string = "❓"
@@ -36,4 +37,6 @@ export async function initOrbs(){
 		const client = new OrbsListMatchClient(address)
 		return client.prepare()
 	}))
+
+	await scheduleWeeklyFeed()
 }

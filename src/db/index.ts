@@ -17,7 +17,7 @@
 
 import * as mysql from "mysql"
 import {FieldInfo, MysqlError} from "mysql"
-import {config} from "../index"
+import {config} from "../config"
 
 export let db: ReturnType<typeof mysql.createPool>
 
