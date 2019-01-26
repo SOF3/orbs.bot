@@ -33,7 +33,7 @@ export class OrbsSpectatorClient extends OrbsClient{
 
 	hasOPList: boolean = false
 	realStartTime: number = Date.now()
-	orbs: Orb[]
+	orbs: Orb[] = []
 	players: Player[] = []
 	private readonly closer: (client: OrbsSpectatorClient) => void
 
@@ -51,6 +51,7 @@ export class OrbsSpectatorClient extends OrbsClient{
 		}else{
 			await query("UPDATE game SET endTime = NULL, badEnd = FALSE WHERE id = ?", [this.gameId])
 		}
+		console.log(`Watching game #${this.gameId >> 16} on server ${this.gameId & 0xFFFF}`)
 		this.sendMessage(OrbsSpectatorClient.JOIN_MATCH,
 			config.orbs.username, config.orbs.guid,
 			-999, -999,
