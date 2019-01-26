@@ -34,7 +34,7 @@ export class OrbsSpectatorClient extends OrbsClient{
 	hasOPList: boolean = false
 	realStartTime: number = Date.now()
 	orbs: Orb[]
-	players: Player[]
+	players: Player[] = []
 	private readonly closer: (client: OrbsSpectatorClient) => void
 
 	constructor(address: string, gameId: number, closer: (client: OrbsSpectatorClient) => void){
