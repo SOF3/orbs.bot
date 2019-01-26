@@ -59,7 +59,7 @@ export class OrbsListMatchClient extends OrbsClient{
 			return
 		}
 		this.knownGameIds[gameId] = true
-		const client = new OrbsSpectatorClient(this.address, (gameId << 16) & this.getPort(), client => {
+		const client = new OrbsSpectatorClient(this.address, (gameId << 16) | this.getPort(), client => {
 			this.spectators.splice(this.spectators.indexOf(client), 1)
 		})
 		await client.prepare()
