@@ -1,0 +1,30 @@
+version: "2"
+services:
+  db:
+    build: ./docker/db
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: correct horse battery staple
+      MYSQL_USER: orbs
+      MYSQL_PASSWORD: correct horse battery staple
+      MYSQL_DATABASE: orbs
+    volumes:
+      - mysql-data:/var/lib/mysql
+  bot:
+    build: ./docker/bot
+    environment:
+      NODE_ENV: development
+      TS_CACHE_DIRECTORY: /ts-cache
+    volumes:
+      - ./config:/orbs/config:ro
+      - ./src:/orbs/src:ro
+      - ./package.json:/orbs/package.json:ro
+      - ./package-lock.json:/orbs/package-lock.json:ro
+      - ./tsconfig.json:/orbs/tsconfig.json
+      - ./plot:/orbs/plot
+      - node-cache:/orbs/node_modules
+      - ts-cache:/ts-cache
+volumes:
+  mysql-data: {}
+  node-cache: {}
+  ts-cache: {}

@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es2015",
+		"outDir": "bin",
+		"newLine": "LF",
+		"charset": "utf8",
+		"emitBOM": false,
+		"moduleResolution": "node",
+		"alwaysStrict": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"strictNullChecks": true,
+		"allowUnreachableCode": false,
+		"preserveConstEnums": true
+	},
+	"include": [
+		"./src/**/*.ts"
+	],
+	"compileOnSave": true
+}

@@ -1,0 +1,22 @@
+{
+	"name": "orbs.bot",
+	"version": "2.0.0",
+	"private": true,
+	"dependencies": {
+		"discord.js": "^11.4.2",
+		"request": "^2.88.0",
+		"request-promise-native": "^1.0.5",
+		"websocket": "^1.0.28",
+		"svg2png": "^4.1.0",
+		"mysql": "^2.16.0"
+	},
+	"devDependencies": {
+		"@types/mysql": "^2.15.5",
+		"@types/node": "^8.10.39",
+		"@types/request-promise-native": "^1.0.15",
+		"@types/websocket": "^0.0.40",
+		"@types/svg2png": "^4.1.0",
+		"typescript": "^3.2.4",
+		"ts-node": "^8.0.1"
+	}
+}
