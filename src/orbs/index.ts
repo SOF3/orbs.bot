@@ -27,7 +27,7 @@ export const UPDATE_RATE = 3000
 export let listMatchClients: OrbsListMatchClient[] = []
 
 export async function initOrbs(){
-	await query("UPDATE game SET endTime = UNIX_TIMESTAMP(), badEnd = TRUE WHERE endTime IS NULL")
+	await query("UPDATE game SET endTime = UNIX_TIMESTAMP() * 1000, badEnd = TRUE WHERE endTime IS NULL")
 
 	console.log("Listing orbs servers")
 	const serverList = await listServers()
