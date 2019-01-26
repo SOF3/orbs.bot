@@ -141,16 +141,18 @@ export class OrbsSpectatorClient extends OrbsClient{
 			[this.gameId, orbId, playerId, timestamp],
 		)
 
-		let ok = false
-		for(const orb of this.orbs){
-			if(orb.ownerId === loserId){
-				ok = true
-				break
+		if(loserId !== -1){
+			let ok = false
+			for(const orb of this.orbs){
+				if(orb.ownerId === loserId){
+					ok = true
+					break
+				}
 			}
-		}
-		if(!ok){
-			await query("UPDATE game_player SET loseTime = ?, loseGameTime = ? WHERE game = ? AND name = ?",
-				[Date.now(), timestamp, this.gameId, this.players[loserId].name])
+			if(!ok){
+				await query("UPDATE game_player SET loseTime = ?, loseGameTime = ? WHERE game = ? AND name = ?",
+					[Date.now(), timestamp, this.gameId, this.players[loserId].name])
+			}
 		}
 
 		return
