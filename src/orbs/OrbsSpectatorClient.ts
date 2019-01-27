@@ -86,6 +86,8 @@ export class OrbsSpectatorClient extends OrbsClient{
 		}
 		const elapsed = parseInt(data[1])
 		this.realStartTime = Date.now() - elapsed
+		await query("UPDATE game SET startTime = ? WHERE id = ?", [this.realStartTime, this.gameId])
+
 		for(let i = 0; i < 24; i++){
 			orbs[i].ownerId = parseInt(data[i + 2])
 		}
