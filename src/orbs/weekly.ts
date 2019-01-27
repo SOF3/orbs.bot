@@ -20,6 +20,8 @@ import {TextChannel} from "discord.js"
 import {client} from "../discord"
 import {config} from "../config"
 import {makeTopText} from "../discord/command/top"
+import {query, selectOne} from "../db"
+import {OrbsClient} from "./OrbsClient"
 
 export type WeeklyStatsDatum = {
 	name: string
@@ -69,6 +71,55 @@ export async function scheduleWeeklyFeed(){
 			const channel = client.channels.get(config.discord.weeklyFeed) as TextChannel
 			await channel.send("The weekly competition has ended!")
 			await channel.send(makeTopText(data))
+
+			const longest = await selectOne<{id: number, endGameTime: number}>(`
+				SELECT id, endGameTime
+				FROM game
+				WHERE UNIX_TIMESTAMP() * 1000 - startTime < 604800 * 1000
+				ORDER BY endGameTime DESC
+				LIMIT 1`, []) as {id: number; endGameTime: number}
+			const [shots, conquers, [bombs, shields], players] = await Promise.all([
+				(async() => {
+					const shots = await selectOne<{cnt: number}>(`
+						SELECT IFNULL(COUNT(*), 0) cnt
+						FROM game_shot
+						WHERE game = ?`, [longest.id]) as {cnt: number}
+					return shots.cnt
+				})(),
+				(async() => {
+					const conquers = await selectOne<{cnt: number}>(`
+						SELECT IFNULL(COUNT(*), 0) cnt
+						FROM game_conquer
+						WHERE game = ?`, [longest.id]) as {cnt: number}
+					return conquers.cnt
+				})(),
+				(async() => {
+					const special = await query<{type: number; cnt: number}>(`
+						SELECT type, IFNULL(COUNT(*), 0) cnt
+						FROM game_special
+						WHERE game = ?
+						GROUP BY type`, [longest.id])
+					let bombs = 0, shields = 0
+					for(const row of special){
+						if(row.type === OrbsClient.BOMB){
+							bombs += row.cnt
+						}else if(row.type === OrbsClient.SHIELD){
+							shields += row.cnt
+						}
+					}
+					return [bombs, shields]
+				})(),
+				(async() => {
+					const players = await query<{name: string}>(`
+						SELECT name
+						FROM game_player
+						WHERE game = ? AND NOT isBot`, [longest.id])
+					return players.map(row => row.name)
+				})(),
+			])
+			await channel.send(`The longest match this week was contributed by **${players.join("**, **")}**.
+					Learn from their perseverance to survive through the ${shots} shots, ${conquers} orb claims, ${bombs} super-bombs and ${shields} shields!`
+				.replace(/^[ \t]+/g, ""))
 		})().catch(err => console.error(err))
 		setTimeout(scheduleWeeklyFeed, 86400 * 1000)
 	}, remaining - 30000) // be 30 seconds early to prevent data reset

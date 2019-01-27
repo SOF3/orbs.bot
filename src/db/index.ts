@@ -52,7 +52,7 @@ export function query<T extends RRD = RRD>(sql: string, args: any[] = [], wantFi
 	})
 }
 
-export async function selectOne<T extends RRow<any>>(sql: string, args: any[]): Promise<T | null>{
+export async function selectOne<T extends RRow<any>>(sql: string, args: any[] = []): Promise<T | null>{
 	const result = await query<T>(sql, args)
 	return result.length > 0 ? result[0] : null
 }
