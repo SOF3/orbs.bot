@@ -52,7 +52,7 @@ function makeGamesText(msg: Message, remainingTime: number){
 	}
 
 	for(const game of games){
-		output += `\n\nGame #${game.gameId} started ${secondsToString((Date.now() - game.realStartTime) / 1000)} ago`
+		output += `\n\nGame #${game.gameId.toString(16)} started ${secondsToString((Date.now() - game.realStartTime) / 1000)} ago`
 		if(Array.isArray(game.players)){
 			output += `\nPlayers: ${game.players.map((p, i) => EMOJI_LIST[i] + p.name + (p.isBot ? "🤖" : "")).join(" · ")}\n`
 			output += game.emojiList()
