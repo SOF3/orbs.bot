@@ -21,14 +21,15 @@ import {plotLines} from "../../util/plotLines"
 import {Attachment} from "discord.js"
 
 export function registerActivityCommands(): Command[]{
-	const UNIT_MINUTE = 1000 * 60
+	const UNIT_SECOND = 1000
+	const UNIT_MINUTE = UNIT_SECOND * 60
 	const UNIT_HOUR = UNIT_MINUTE * 60
 	const UNIT_DAY = UNIT_HOUR * 24
 
 	const lists: [string, number, number, string, number][] = [
-		["week", UNIT_HOUR, 7 * UNIT_DAY, "hours", 1],
-		["day", 5 * UNIT_MINUTE, UNIT_DAY, "minutes", 5],
-		["hour", UNIT_MINUTE, UNIT_HOUR, "minutes", 1],
+		["week", UNIT_HOUR, 7 * UNIT_DAY, "days", 1 / 24], // 24 * 7 = 168 bins
+		["day", 10 * UNIT_MINUTE, UNIT_DAY, "hours", 1 / 6], // 24 * 6 = 144 bins
+		["hour", 30 * UNIT_SECOND, UNIT_HOUR, "minutes", 0.5], // 2 * 60 = 120 bins
 	]
 
 	return lists.map(setup => {
