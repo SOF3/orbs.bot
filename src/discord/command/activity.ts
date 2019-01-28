@@ -20,6 +20,24 @@ import {query} from "../../db"
 import {plotLines} from "../../util/plotLines"
 import {Attachment} from "discord.js"
 
+export async function reportActivity(total: number, unit: number, name: string, unitName: string, unitCount: number){
+	const bins = total / unit
+	const data = await query<{units: number; cnt: number}>(`
+					SELECT -x units, (
+						SELECT COUNT(*) FROM game WHERE
+							startTime < UNIX_TIMESTAMP() * 1000 - :unit * nat.x + :unit 
+							AND (endTime >= UNIX_TIMESTAMP() * 1000 - :unit * nat.x OR endTime IS NULL)
+					) cnt FROM natural_number nat WHERE 1 <= x AND x <= :bins
+					ORDER BY units ASC`
+		.replace(/:bins/g, bins.toString())
+		.replace(/:total/g, total.toString())
+		.replace(/:unit/g, unit.toString()))
+
+	return await plotLines(
+		`Server activity over the past ${name}`, unitName, "Games", "blue",
+		data.map(row => [row.units * unitCount, row.cnt] as [number, number]))
+}
+
 export function registerActivityCommands(): Command[]{
 	const UNIT_SECOND = 1000
 	const UNIT_MINUTE = UNIT_SECOND * 60
@@ -38,21 +56,7 @@ export function registerActivityCommands(): Command[]{
 			name: name,
 			description: `Shows server activity over the past ${name}`,
 			executor: async msg => {
-				const bins = total / unit
-				const data = await query<{units: number; cnt: number}>(`
-					SELECT -x units, (
-						SELECT COUNT(*) FROM game WHERE
-							startTime < UNIX_TIMESTAMP() * 1000 - :unit * nat.x + :unit 
-							AND (endTime >= UNIX_TIMESTAMP() * 1000 - :unit * nat.x OR endTime IS NULL)
-					) cnt FROM natural_number nat WHERE 1 <= x AND x <= :bins
-					ORDER BY units ASC`
-					.replace(/:bins/g, bins.toString())
-					.replace(/:total/g, total.toString())
-					.replace(/:unit/g, unit.toString()))
-
-				const image = await plotLines(
-					`Server activity over the past ${name}`, unitName, "Games", "blue",
-					data.map(row => [row.units * unitCount, row.cnt] as [number, number]))
+				const image = await reportActivity(total, unit, name, unitName, unitCount)
 
 				const files = [new Attachment(image, `${name}.png`)]
 				console.log(`Sending ${name}.png`)

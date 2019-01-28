@@ -16,12 +16,13 @@
  */
 
 import {ACTION_WEEKLY_RANKINGS, rest} from "./rest"
-import {TextChannel} from "discord.js"
+import {Attachment, TextChannel} from "discord.js"
 import {client} from "../discord"
 import {config} from "../config"
 import {makeTopText} from "../discord/command/top"
 import {query, selectOne} from "../db"
 import {OrbsClient} from "./OrbsClient"
+import {reportActivity} from "../discord/command/activity"
 
 export type WeeklyStatsDatum = {
 	name: string
@@ -120,6 +121,11 @@ export async function scheduleWeeklyFeed(){
 			await channel.send(`The longest match this week was contributed by **${players.join("**, **")}**.
 					Learn from their perseverance to survive through the ${shots} shots, ${conquers} orb claims, ${bombs} super-bombs and ${shields} shields!`
 				.replace(/^[ \t]+/g, ""))
+
+			const image = await reportActivity(604800 * 1000, 3600 * 1000, "week", "days", 1 / 24)
+			await channel.send({
+				files: [new Attachment(image, `week.png`)],
+			})
 		})().catch(err => console.error(err))
 		setTimeout(scheduleWeeklyFeed, 86400 * 1000)
 	}, remaining - 30000) // be 30 seconds early to prevent data reset
