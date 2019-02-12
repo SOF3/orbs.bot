@@ -15,7 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export const adminList = ["390090409159950338"]
+export const adminList = [
+	"390090409159950338",
+	"391734240699744256",
+	"172779439736750080",
+]
 
 export function async<T = any>(fn: (cb: (err: any, value?: T) => void) => void): Promise<T>{
 	return new Promise((resolve, reject) => {

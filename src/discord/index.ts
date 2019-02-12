@@ -23,6 +23,8 @@ import {listMatchClients, UPDATE_RATE} from "../orbs"
 
 export let client: Client
 
+export const ignoreList = {} as {[id: string]: true}
+
 export async function initDiscord(){
 	client = new Client()
 	console.log("Logging in")
@@ -60,12 +62,15 @@ export async function onMessage(msg: Message){
 	if(!msg.content.startsWith(",")){
 		return
 	}
+	if(ignoreList[msg.author.id]){
+		return
+	}
 	const args = msg.content.substr(1).split(/ +/)
 	const cmdName = args.shift() as string
 	const cmd = commands[cmdName]
 	if(cmd !== undefined){
 		await msg.react("🤔")
-		console.log(`Handling command ,${cmdName} by ${msg.author.username} on ${msg.guild.name} #${(msg.channel as TextChannel).name}`)
+		console.log(`Handling command ,${cmdName} ${JSON.stringify(args)} by ${msg.author.username} on ${msg.guild.name} #${(msg.channel as TextChannel).name}`)
 		try{
 			await cmd.executor(msg, args)
 		}catch(e){

@@ -18,6 +18,7 @@
 import {Message} from "discord.js"
 import {RestartCommand} from "./restart"
 import {GamesCommand} from "./games"
+import {IgnoreCommand} from "./ignore"
 import {TopCommand} from "./top"
 import {StatusCommand} from "./status"
 import {config} from "../../config"
@@ -53,6 +54,13 @@ registerCommand(RestartCommand)
 registerCommand(GamesCommand)
 registerCommand(TopCommand)
 registerCommand(StatusCommand)
+registerCommand(IgnoreCommand)
 for(const cmd of registerActivityCommands()){
 	registerCommand(cmd)
+}
+
+export function parseUser(arg: string): string | null{
+	if(arg.match(/^[0-9]{10,}$/)) return arg
+	if(arg.match(/^<@[0-9]{10,}>$/)) return arg.substring(2, arg.length - 1)
+	return null
 }
