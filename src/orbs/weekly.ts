@@ -23,6 +23,7 @@ import {makeTopText} from "../discord/command/top"
 import {query, selectOne} from "../db"
 import {OrbsClient} from "./OrbsClient"
 import {reportActivity} from "../discord/command/activity"
+import {secondsToString} from "../util"
 
 export type WeeklyStatsDatum = {
 	name: string
@@ -118,8 +119,9 @@ export async function scheduleWeeklyFeed(){
 					return players.map(row => row.name)
 				})(),
 			])
-			await channel.send(`The longest match this week was contributed by **${players.join("**, **")}**.
-					Learn from their perseverance to survive through the ${shots} shots, ${conquers} orb claims, ${bombs} super-bombs and ${shields} shields!`
+			await channel.send(`The longest match this week took ${secondsToString(longest.endGameTime)}.
+Contributed by **${players.join("**, **")}**.
+Learn from their perseverance to survive through the ${shots} shots, ${conquers} orb claims, ${bombs} super-bombs and ${shields} shields!`
 				.replace(/^[ \t]+/g, ""))
 
 			const image = await reportActivity(604800 * 1000, 3600 * 1000, "week", "days", 1 / 24)

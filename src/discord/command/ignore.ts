@@ -17,7 +17,7 @@
 
 import {adminList} from "../../util"
 import {Command, parseUser} from "./index"
-import {client, ignoreList} from "../index"
+import {ignoreList} from "../index"
 import {Friendly} from "../../util/Friendly"
 
 export const IgnoreCommand: Command = {
@@ -35,5 +35,6 @@ export const IgnoreCommand: Command = {
 			throw new Friendly("Usage: ,ignore <user>")
 		}
 		ignoreList[user] = true
+		await msg.reply(`Ignoring user <@${user}> until bot restarts`)
 	},
 }
