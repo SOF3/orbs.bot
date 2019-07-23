@@ -63,7 +63,7 @@ export function secondsToString(seconds: number | undefined){
 		}
 	}
 	if(seconds > 0){
-		pieces.push(`${seconds}s`)
+		pieces.push(`${Math.round(seconds * 1000) / 1000}s`)
 	}
 	return pieces.join(" ")
 }
