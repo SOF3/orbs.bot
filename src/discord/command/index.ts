@@ -17,6 +17,7 @@
 
 import {Message} from "discord.js"
 import {FindCommand} from "./find"
+import {ReplayCommand} from "./replay"
 import {RestartCommand} from "./restart"
 import {GamesCommand} from "./games"
 import {IgnoreCommand} from "./ignore"
@@ -57,6 +58,7 @@ registerCommand(TopCommand)
 registerCommand(StatusCommand)
 registerCommand(IgnoreCommand)
 registerCommand(FindCommand)
+registerCommand(ReplayCommand)
 for(const cmd of registerActivityCommands()){
 	registerCommand(cmd)
 }

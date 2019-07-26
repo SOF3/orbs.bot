@@ -104,6 +104,14 @@ export class OrbsSpectatorClient extends OrbsClient{
 					"INSERT INTO game_player (game, playerId, name, isBot, botId) VALUES (?, ?, ?, ?, ?)",
 					[this.gameId, player.id, player.name, player.isBot, player.isBot ? player.nid : null],
 				)))
+				for(let i = 0; i < 24; i++){
+					if(orbs[i].ownerId !== -1){
+						await query(
+							"INSERT INTO game_conquer (game, orb, player, gameTime) VALUES (?, ?, ?, ?)",
+							[this.gameId, i, orbs[i].ownerId, 0],
+						)
+					}
+				}
 			}
 		}
 	}
