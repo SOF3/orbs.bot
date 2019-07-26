@@ -33,7 +33,7 @@ export function makeTopText(data: WeeklyStatsDatum[]){
 	let rank = 1
 	for(const result of data){
 		const text = `#${rank++}. **${result.name}** won ${result.numWins} in ${result.totGames} games`
-			+ (result.numTop3 > result.numWins ? `(top 3 in ${result.numTop3} other games)` : "")
+			+ (result.numTop3 > result.numWins ? `(top 3 in ${result.numTop3 - result.numWins} other games)` : "")
 			+ ". " + makeAccuracyText(result.totHits, result.totShots)
 		output.push(text)
 		if(rank > 15){

@@ -45,6 +45,7 @@ export function registerActivityCommands(): Command[]{
 	const UNIT_DAY = UNIT_HOUR * 24
 
 	const lists: [string, number, number, string, number][] = [
+		["month", UNIT_DAY, 30 * UNIT_DAY, "days", 1], // 30 bins
 		["week", UNIT_HOUR, 7 * UNIT_DAY, "days", 1 / 24], // 24 * 7 = 168 bins
 		["day", 10 * UNIT_MINUTE, UNIT_DAY, "hours", 1 / 6], // 24 * 6 = 144 bins
 		["hour", 30 * UNIT_SECOND, UNIT_HOUR, "minutes", 0.5], // 2 * 60 = 120 bins
