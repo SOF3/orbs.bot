@@ -9,7 +9,7 @@ services:
       MYSQL_PASSWORD: correct horse battery staple
       MYSQL_DATABASE: orbs
     volumes:
-      - mysql-data:/var/lib/mysql
+      - ./data/mysql-data:/var/lib/mysql
   bot:
     build: ./docker/bot
     environment:
@@ -22,9 +22,5 @@ services:
       - ./package-lock.json:/orbs/package-lock.json:ro
       - ./tsconfig.json:/orbs/tsconfig.json
       - ./plot:/orbs/plot
-      - node-cache:/orbs/node_modules
-      - ts-cache:/ts-cache
-volumes:
-  mysql-data: {}
-  node-cache: {}
-  ts-cache: {}
+      - ./data/node-cache:/orbs/node_modules
+      - ./data/ts-cache:/ts-cache
