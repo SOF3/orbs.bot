@@ -49,9 +49,7 @@ export async function scheduleWeeklyFeed(){
 
 	const moments = {
 		1: "Last hour before the weekly competition ends. Will there be sudden plot twists?",
-		12: "12 hours before the weekly competition ends. Work hard and make it to the top!",
-		24: "24 hours before the weekly competition ends.",
-		84: "Half of the week has passed!",
+		24: "24 hours before the weekly competition ends. Work hard and make it to the top!",
 	} as {[hours: number]: string}
 
 	for(const hours in moments){
@@ -77,7 +75,7 @@ export async function scheduleWeeklyFeed(){
 			const longest = await selectOne<{id: number, endGameTime: number}>(`
 				SELECT id, endGameTime
 				FROM game
-				WHERE UNIX_TIMESTAMP() * 1000 - startTime < 604800 * 1000
+				WHERE UNIX_TIMESTAMP() * 1000 - startTime < 604800 * 1000 AND loseTime IS NULL
 				ORDER BY endGameTime DESC
 				LIMIT 1`, []) as {id: number; endGameTime: number}
 			const [shots, conquers, [bombs, shields], players] = await Promise.all([
