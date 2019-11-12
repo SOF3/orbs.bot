@@ -5,7 +5,7 @@
 	"dependencies": {
 		"discord.js": "^11.4.2",
 		"request": "^2.88.0",
-		"request-promise-native": "^1.0.5",
+		"request-promise-native": "^1.0.8",
 		"websocket": "^1.0.30",
 		"svg2png": "^4.1.0",
 		"mysql": "^2.16.0"
