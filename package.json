@@ -14,7 +14,7 @@
 		"@types/mysql": "^2.15.8",
 		"@types/node": "^12.12.7",
 		"@types/request-promise-native": "^1.0.17",
-		"@types/websocket": "^0.0.40",
+		"@types/websocket": "^1.0.0",
 		"@types/svg2png": "^4.1.0",
 		"typescript": "^3.7.2",
 		"ts-node": "^8.5.0"
