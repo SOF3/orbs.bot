@@ -17,6 +17,6 @@
 		"@types/websocket": "^1.0.0",
 		"@types/svg2png": "^4.1.0",
 		"typescript": "^3.7.2",
-		"ts-node": "^8.5.2"
+		"ts-node": "^8.5.3"
 	}
 }
