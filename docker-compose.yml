@@ -2,6 +2,7 @@ version: "2"
 services:
   db:
     build: ./docker/db
+    restart: always
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: correct horse battery staple
@@ -12,6 +13,7 @@ services:
       - ./data/mysql-data:/var/lib/mysql
   bot:
     build: ./docker/bot
+    restart: always
     environment:
       NODE_ENV: development
       TS_CACHE_DIRECTORY: /ts-cache

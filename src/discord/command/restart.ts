@@ -27,7 +27,6 @@ export const RestartCommand: Command = {
 			await msg.react("😴")
 			await client.user.setActivity("bot restart", {type: "PLAYING"})
 			process.exit(0)
-			return
 		}
 		await msg.react("😡")
 		await msg.reply("Who do you think you are?")
